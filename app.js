@@ -29,6 +29,7 @@ function addTodo(event){
   completeButton.innerHTML = '<i class="fas fa-check"></i>';
   trashButton.innerHTML = '<i class="fas fa-trash"></i>';
 
+  saveLocalTodos(todoInput.value);
   todoInput.value = "";
 }
 
@@ -69,4 +70,15 @@ function filterTodo(event){
         break;
     }
   });
+}
+
+function saveLocalTodos(todo){
+  let todos;
+  if(localStorage.getItem("todos") === null){
+    todos = [];
+  }else{
+    todos = JSON.parse(localStorage.getItem("todos"));
+  }
+  todos.push(todo);
+  localStorage.setItem("todos",JSON.stringify(todos));
 }
