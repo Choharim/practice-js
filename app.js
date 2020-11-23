@@ -46,8 +46,8 @@ function deleteCheck(event){
   if(item.classList[0] === "trash-btn"){
     const todo = item.parentElement;
     todo.classList.add("fall");
+    removeLocalTodos(todo);
     todo.addEventListener("transitionend",()=>todo.remove());
-   
   } else if(item.classList[0] === "complete-btn"){
     const todo = item.parentElement;
     todo.classList.toggle("completed");
@@ -79,25 +79,33 @@ function filterTodo(event){
   });
 }
 
-function saveLocalTodos(todo){
+function check(){
   let todos;
   if(localStorage.getItem("todos") === null){
     todos = [];
   }else{
     todos = JSON.parse(localStorage.getItem("todos"));
   }
+  return todos;
+}
+
+function saveLocalTodos(todo){
+  const todos = check();
   todos.push(todo);
   localStorage.setItem("todos",JSON.stringify(todos));
 }
 
 function getTodos(){
-  let todos;
-  if(localStorage.getItem("todos") === null){
-    todos = [];
-  }else{
-    todos = JSON.parse(localStorage.getItem("todos"));
-  }
+  const todos = check();
   todos.forEach(function(todo){
     addTodo(todo);
   });
 }
+
+function removeLocalTodos(todo){
+  let todos = check();
+  const todoIndex = todo.children[0].innerText;
+  todos.splice(todos.indexOf(todoIndex),1);
+  localStorage.setItem("todos",JSON.stringify(todos));
+}
+
